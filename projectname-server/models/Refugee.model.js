@@ -2,6 +2,11 @@ const mongoose = require('mongoose');
 const { Schema, model } = mongoose;
 
 const refugeeSchema = new Schema({
+    // type:{
+    //     type: String,
+    //     required: true,
+    //     enum:["Refugee", "Host"]
+    // },
     name: {
         type: String,
         required: true
@@ -18,27 +23,13 @@ const refugeeSchema = new Schema({
         type: String,
     },
     available: Boolean,
-    user:{
+    author:{
         type: { type: Schema.Types.ObjectId, ref: 'User' }
     },
-    location: {
-        type: {
-            type: String, // Don't do `{ location: { type: String } }`
-            enum: ['Point'], // 'location.type' must be 'Point'
-            required: true
-        },
-        // Note that longitude comes first in a GeoJSON coordinate array, not latitude.
-        coordinates: {
-            type: [Number],
-            required: true,
-            
-        },
-    }, 
-    address:{
-    type: string,
-    required: true
-        
-    },
+    currentlyBasedIn:{
+        type: String,
+        required: true
+    }
     // owner will be added later on
 });
 

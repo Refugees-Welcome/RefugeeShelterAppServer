@@ -14,7 +14,13 @@ const userSchema = new Schema(
       trim: true
     },
     password: String,
-},
+//   type:{
+//     type: String,
+//     required: true,
+//     enum:["Refugee", "Host"]
+// },
+  },
+
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
     timestamps: true,
