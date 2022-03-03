@@ -2,17 +2,12 @@ const mongoose = require('mongoose');
 const { Schema, model } = mongoose;
 
 const refugeeSchema = new Schema({
-    // type:{
-    //     type: String,
-    //     required: true,
-    //     enum:["Refugee", "Host"]
-    // },
     name: {
         type: String,
         required: true
     },
     languages: {
-        type: Array,
+        type: [String],
         required: true
     },
     contactInfo:{
@@ -22,7 +17,7 @@ const refugeeSchema = new Schema({
     description:{
         type: String,
     },
-    available: Boolean,
+    onSearch: Boolean,
     author:{
         type: { type: Schema.Types.ObjectId, ref: 'User' }
     },

@@ -13,12 +13,10 @@ const userSchema = new Schema(
       lowercase: true,
       trim: true
     },
-    password: String,
-//   type:{
-//     type: String,
-//     required: true,
-//     enum:["Refugee", "Host"]
-// },
+    password: {
+        type: String,
+        required: true,
+    },
   },
 
   {
