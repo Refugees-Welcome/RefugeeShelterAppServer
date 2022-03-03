@@ -4,13 +4,14 @@ const mongoose = require("mongoose");
 
 // create
 router.post("/", (req, res) => {
-
+  
   const shelterDetails = {
     name: req.body.name,
     languages: req.body.languages,
-    contactInfo: req.body.languages,
+    contactInfo: req.body.contactInfo,
     description: req.body.description,
-    available: true,
+    available: req.body.available,
+    author: req.body.author,
     address: req.body.address
   }
 
@@ -62,9 +63,13 @@ router.put('/:shelterId', (req, res, next) => {
   }
 
   const shelterDetails = {
-    title: req.body.title,
+    name: req.body.name,
+    languages: req.body.languages,
+    contactInfo: req.body.contactInfo,
     description: req.body.description,
-    tasks: req.body.tasks,
+    available: req.body.available,
+    author: req.body.author,
+    address: req.body.address
   }
 
   Shelter.findByIdAndUpdate(shelterId, shelterDetails, { new: true })

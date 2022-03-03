@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 
 // create
 router.post("/", (req, res) => {
+  // const {userID} = req.body;
 
   const refugeeDetails = {
     name: req.body.name,
@@ -11,6 +12,7 @@ router.post("/", (req, res) => {
     contactInfo: req.body.contactInfo,
     description: req.body.description,
     onSearch: req.body.onSearch,
+    author: req.body.author,
     currentlyBasedIn: req.body.currentlyBasedIn
   }
 

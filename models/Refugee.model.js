@@ -18,9 +18,7 @@ const refugeeSchema = new Schema({
         type: String,
     },
     onSearch: Boolean,
-    author:{
-        type: { type: Schema.Types.ObjectId, ref: 'User' }
-    },
+    author: { type: Schema.Types.ObjectId, ref: 'User' },
     currentlyBasedIn:{
         type: String,
         required: true
