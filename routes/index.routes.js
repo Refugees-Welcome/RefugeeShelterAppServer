@@ -1,5 +1,7 @@
 const router = require("express").Router();
 const authRoutes = require("./auth.routes");
+const refugeeRoutes = require("./refugee.routes");
+const shelterRoutes = require("./shelter.routes");
 
 /* GET home page */
 router.get("/", (req, res, next) => {
@@ -7,7 +9,7 @@ router.get("/", (req, res, next) => {
 });
 
 router.use("/auth", authRoutes);
-router.use("/refugee", refugeesRoutes);
+router.use("/refugee", refugeeRoutes);
 router.use("/shelter", shelterRoutes);
 
 module.exports = router;

@@ -24,8 +24,8 @@ const shelterSchema = new Schema({
         type: { type: Schema.Types.ObjectId, ref: 'User' }
     },
     address:{
-    type: string,
-    required: true
+        type: String,
+        required: true
     },
     // requestFrom:{
     //     type: { type: Schema.Types.ObjectId, ref: 'User' 
