@@ -3,6 +3,7 @@ const authRoutes = require("./auth.routes");
 const refugeeRoutes = require("./refugee.routes");
 const shelterRoutes = require("./shelter.routes");
 
+const { isAuthenticated } = require("../middleware/jwt.middleware"); 
 /* GET home page */
 router.get("/", (req, res, next) => {
   res.json("All good in here");
