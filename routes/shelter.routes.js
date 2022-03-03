@@ -68,7 +68,6 @@ router.put('/:shelterId', (req, res, next) => {
     contactInfo: req.body.contactInfo,
     description: req.body.description,
     available: req.body.available,
-    author: req.body.author,
     address: req.body.address
   }
 
