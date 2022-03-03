@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const Shelter = require("../models/Shelter.model");
 const mongoose = require("mongoose");
-
+const { isAuthenticated } = require("../middleware/jwt.middleware"); 
 // create
 router.post("/", (req, res) => {
   
@@ -38,7 +38,7 @@ router.get('/', (req, res, next) => {
 
 
 // update
-router.get('/:shelterId', (req, res, next) => {
+router.get('/:shelterId',isAuthenticated, (req, res, next) => {
   const { shelterId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(shelterId)) {
@@ -54,14 +54,14 @@ router.get('/:shelterId', (req, res, next) => {
 
 
 
-router.put('/:shelterId', (req, res, next) => {
+router.put('/:shelterId',isAuthenticated, (req, res, next) => {
   const { shelterId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(shelterId)) {
     res.status(400).json({ message: 'Specified id is not valid' });
     return;
   }
-
+// if userId === author
   const shelterDetails = {
     name: req.body.name,
     languages: req.body.languages,
@@ -78,7 +78,7 @@ router.put('/:shelterId', (req, res, next) => {
 
 
 // delete
-router.delete('/:shelterId', (req, res, next) => {
+router.delete('/:shelterId',isAuthenticated, (req, res, next) => {
   const { projectId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(shelterId)) {

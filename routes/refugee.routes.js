@@ -4,7 +4,6 @@ const mongoose = require("mongoose");
 
 // create
 router.post("/", (req, res) => {
-  // const {userID} = req.body;
 
   const refugeeDetails = {
     name: req.body.name,
@@ -59,7 +58,7 @@ router.put('/:refugeeId', (req, res, next) => {
     res.status(400).json({ message: 'Specified id is not valid' });
     return;
   }
-
+// if userId === author
   const refugeeDetails = {
     name: req.body.name,
     languages: req.body.languages,
