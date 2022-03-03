@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const Shelter = require("../models/Shelter.model");
 const mongoose = require("mongoose");
+const User = require("../models/User.model")
 const { isAuthenticated } = require("../middleware/jwt.middleware"); 
 // create
 router.post("/", (req, res) => {
@@ -11,7 +12,7 @@ router.post("/", (req, res) => {
     contactInfo: req.body.contactInfo,
     description: req.body.description,
     available: req.body.available,
-    author: req.body.author,
+    author: User._id,
     address: req.body.address
   }
 
@@ -31,7 +32,7 @@ router.post("/", (req, res) => {
 // read
 router.get('/', (req, res, next) => {
   Shelter.find()
-    .populate('tasks')
+    .populate('User')
     .then(allShelters => res.json(allShelters))
     .catch(err => res.json(err));
 });
@@ -78,7 +79,7 @@ router.put('/:shelterId',isAuthenticated, (req, res, next) => {
 
 
 // delete
-router.delete('/:shelterId',isAuthenticated, (req, res, next) => {
+router.delete('/:shelterId', (req, res, next) => {
   const { projectId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(shelterId)) {
@@ -88,7 +89,7 @@ router.delete('/:shelterId',isAuthenticated, (req, res, next) => {
 
   Shelter.findByIdAndRemove(shelterId)
     .then( deteletedProject => {
-      return Task.deleteMany( { _id: { $in: deteletedProject.tasks } } );
+      return Shelter.deleteMany( { _id: { $in: deteletedProject } } );
     })
     .then(() => res.json({ message: `Project with ${shelterId} is removed successfully.` }))
     .catch(error => res.status(500).json(error));
