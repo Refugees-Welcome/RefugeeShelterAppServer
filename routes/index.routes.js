@@ -7,5 +7,7 @@ router.get("/", (req, res, next) => {
 });
 
 router.use("/auth", authRoutes);
+router.use("/refugee", refugeesRoutes);
+router.use("/shelter", shelterRoutes);
 
 module.exports = router;
