@@ -1,4 +1,6 @@
 const router = require("express").Router();
+const jwt = require("jsonwebtoken");
+const { isAuthenticated } = require("../middleware/jwt.middleware"); 
 
 // ℹ️ Handles password encryption
 const bcrypt = require("bcrypt");
@@ -10,15 +12,11 @@ const saltRounds = 10;
 // Require the User model in order to interact with the database
 const User = require("../models/User.model");
 
-// Require necessary (isLoggedOut and isLiggedIn) middleware in order to control access to specific routes
-const isLoggedOut = require("../middleware/isLoggedOut");
-const isLoggedIn = require("../middleware/isLoggedIn");
-
 router.get("/loggedin", (req, res) => {
   res.json(req.user);
 });
 
-router.post("/signup", isLoggedOut, (req, res) => {
+router.post("/signup", (req, res) => {
   const { username, password } = req.body;
 
   if (!username) {
@@ -60,12 +58,11 @@ router.post("/signup", isLoggedOut, (req, res) => {
         // Create a user and save it in the database
         return User.create({
           username,
+          email,
           password: hashedPassword,
         });
       })
       .then((user) => {
-        // Bind the user to the session object
-        req.session.user = user;
         res.status(201).json(user);
       })
       .catch((error) => {
@@ -83,13 +80,19 @@ router.post("/signup", isLoggedOut, (req, res) => {
   });
 });
 
-router.post("/login", isLoggedOut, (req, res, next) => {
-  const { username, password } = req.body;
+router.post("/login", (req, res, next) => {
+  const { username, password, email } = req.body;
 
   if (!username) {
     return res
       .status(400)
       .json({ errorMessage: "Please provide your username." });
+  }
+
+  if (!email) {
+    return res
+      .status(400)
+      .json({ errorMessage: "Please provide your email, you won't recive newsletters from us." });
   }
 
   // Here we use the same logic as above
@@ -109,14 +112,26 @@ router.post("/login", isLoggedOut, (req, res, next) => {
       }
 
       // If user is found based on the username, check if the in putted password matches the one saved in the database
-      bcrypt.compare(password, user.password).then((isSamePassword) => {
-        if (!isSamePassword) {
-          return res.status(400).json({ errorMessage: "Wrong credentials." });
-        }
-        req.session.user = user;
-        // req.session.user = user._id; // ! better and safer but in this case we saving the entire user object
-        return res.json(user);
-      });
+      bcrypt.compare(password, user.password)
+        .then((isSamePassword) => {
+          if (!isSamePassword) {
+            return res.status(400).json({ errorMessage: "Wrong credentials." });
+          }
+
+          const payload = {
+            _id: user._id,
+            username: user.username,
+            email: user.email
+          }
+
+          const authToken = jwt.sign(
+            payload,
+            process.env.TOKEN_SECRET,
+            { algorithm: 'HS256', expiresIn: "6h" }
+          );
+
+          return res.json({ authToken: authToken });
+        });
     })
 
     .catch((err) => {
@@ -127,13 +142,10 @@ router.post("/login", isLoggedOut, (req, res, next) => {
     });
 });
 
-router.get("/logout", isLoggedIn, (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      return res.status(500).json({ errorMessage: err.message });
-    }
-    res.json({ message: "Done" });
-  });
+
+router.get('/verify', isAuthenticated, (req, res, next) => {
+  res.json(req.payload);
 });
+
 
 module.exports = router;
