@@ -17,12 +17,17 @@ router.get("/loggedin", (req, res) => {
 });
 
 router.post("/signup", (req, res) => {
-  const { username, password } = req.body;
+  const { username, email, password } = req.body;
 
   if (!username) {
     return res
       .status(400)
       .json({ errorMessage: "Please provide your username." });
+  }
+  if (!email) {
+    return res
+      .status(400)
+      .json({ errorMessage: "Please provide your email." });
   }
 
   if (password.length < 8) {
@@ -81,18 +86,12 @@ router.post("/signup", (req, res) => {
 });
 
 router.post("/login", (req, res, next) => {
-  const { username, password, email } = req.body;
+  const { username, password, } = req.body;
 
   if (!username) {
     return res
       .status(400)
       .json({ errorMessage: "Please provide your username." });
-  }
-
-  if (!email) {
-    return res
-      .status(400)
-      .json({ errorMessage: "Please provide your email, you won't recive newsletters from us." });
   }
 
   // Here we use the same logic as above
@@ -104,7 +103,7 @@ router.post("/login", (req, res, next) => {
   }
 
   // Search the database for a user with the username submitted in the form
-  User.findOne({ username })
+  User.findOne({username})
     .then((user) => {
       // If the user isn't found, send the message that user provided wrong credentials
       if (!user) {
