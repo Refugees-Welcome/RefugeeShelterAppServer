@@ -31,7 +31,7 @@ router.post("/", (req, res) => {
 // read
 router.get('/', (req, res, next) => {
   Refugee.find()
-    .populate('tasks')
+    // .populate('tasks')
     .then(allRefugees => res.json(allRefugees))
     .catch(err => res.json(err));
 });
@@ -46,7 +46,7 @@ router.get('/:refugeeId', (req, res, next) => {
   }
 
   Refugee.findById(refugeeId)
-    .populate('tasks')
+    // .populate('tasks')
     .then(refugee => res.json(refugee))
     .catch(err => res.status(500).json(err));
 });
