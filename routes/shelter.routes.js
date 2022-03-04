@@ -88,8 +88,8 @@ router.delete('/:shelterId', (req, res, next) => {
   }
 
   Shelter.findByIdAndRemove(shelterId)
-    .then( deteletedShelter => {
-      return Shelter.deleteMany( { _id: { $in: deteletedShelter } } );
+    .then( deteletedProject => {
+      return Shelter.deleteMany( { _id: { $in: deteletedProject } } );
     })
     .then(() => res.json({ message: `Project with ${shelterId} is removed successfully.` }))
     .catch(error => res.status(500).json(error));
