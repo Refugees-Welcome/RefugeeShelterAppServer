@@ -12,7 +12,7 @@ router.post("/", (req, res) => {
     contactInfo: req.body.contactInfo,
     description: req.body.description,
     available: req.body.available,
-    // author: User._id,
+    author: req.body.author,
     address: req.body.address
   }
 
