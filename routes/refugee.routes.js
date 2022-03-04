@@ -83,8 +83,8 @@ router.delete('/:refugeeId', (req, res, next) => {
   }
 
   Refugee.findByIdAndRemove(refugeeId)
-    .then( deteletedRefugee => {
-      return Task.deleteMany( { _id: { $in: deletedRefugee.tasks } } );
+    .then( deletedRefugee => {
+      return Task.deleteMany( { _id: { $in: deletedRefugee } } );
     })
     .then(() => res.json({ message: `Refugee with ${refugeeId} is removed successfully.` }))
     .catch(error => res.status(500).json(error));

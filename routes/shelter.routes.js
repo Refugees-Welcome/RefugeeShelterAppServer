@@ -12,7 +12,7 @@ router.post("/", (req, res) => {
     contactInfo: req.body.contactInfo,
     description: req.body.description,
     available: req.body.available,
-    author: User._id,
+    // author: User._id,
     address: req.body.address
   }
 
@@ -80,7 +80,7 @@ router.put('/:shelterId',isAuthenticated, (req, res, next) => {
 
 // delete
 router.delete('/:shelterId', (req, res, next) => {
-  const { projectId } = req.params;
+  const { shelterId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(shelterId)) {
     res.status(400).json({ message: 'Specified id is not valid' });
@@ -88,8 +88,8 @@ router.delete('/:shelterId', (req, res, next) => {
   }
 
   Shelter.findByIdAndRemove(shelterId)
-    .then( deteletedProject => {
-      return Shelter.deleteMany( { _id: { $in: deteletedProject } } );
+    .then( deteletedShelter => {
+      return Shelter.deleteMany( { _id: { $in: deteletedShelter } } );
     })
     .then(() => res.json({ message: `Project with ${shelterId} is removed successfully.` }))
     .catch(error => res.status(500).json(error));
