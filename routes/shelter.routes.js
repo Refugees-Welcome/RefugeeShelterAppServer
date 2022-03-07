@@ -32,7 +32,7 @@ router.post("/", (req, res) => {
 // read
 router.get('/', (req, res, next) => {
   Shelter.find()
-    // .populate('User')
+    .populate('author')
     .then(allShelters => res.json(allShelters))
     .catch(err => res.json(err));
 });
@@ -48,7 +48,7 @@ router.get('/:shelterId',isAuthenticated, (req, res, next) => {
   }
 
   Shelter.findById(shelterId)
-    // .populate('tasks')
+  .populate('author')
     .then(shelter => res.json(shelter))
     .catch(err => res.status(500).json(err));
 });
@@ -73,6 +73,7 @@ router.put('/:shelterId',isAuthenticated, (req, res, next) => {
   }
 
   Shelter.findByIdAndUpdate(shelterId, shelterDetails, { new: true })
+  .populate('author')
     .then((updatedShelter) => res.json(updatedShelter))
     .catch(error => res.status(500).json(error));
 });
