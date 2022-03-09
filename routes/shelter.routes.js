@@ -3,6 +3,8 @@ const Shelter = require("../models/Shelter.model");
 const mongoose = require("mongoose");
 const User = require("../models/User.model")
 const { isAuthenticated } = require("../middleware/jwt.middleware"); 
+const isOwner = require("../middleware/isOwner")
+// const {checkUser} =require("../middleware/jwt.middleware")
 // create
 router.post("/", (req, res) => {
   
@@ -39,6 +41,7 @@ router.get('/', (req, res, next) => {
 
 
 // update
+
 router.get('/:shelterId',isAuthenticated, (req, res, next) => {
   const { shelterId } = req.params;
 
@@ -62,7 +65,8 @@ router.put('/:shelterId',isAuthenticated, (req, res, next) => {
     res.status(400).json({ message: 'Specified id is not valid' });
     return;
   }
-// if userId === author
+
+
   const shelterDetails = {
     name: req.body.name,
     languages: req.body.languages,
@@ -80,13 +84,19 @@ router.put('/:shelterId',isAuthenticated, (req, res, next) => {
 
 
 // delete
-router.delete('/:shelterId', (req, res, next) => {
+router.delete('/:shelterId',isAuthenticated , (req, res, next) => {
   const { shelterId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(shelterId)) {
     res.status(400).json({ message: 'Specified id is not valid' });
     return;
   }
+ // if userId === author
+//  console.log(payload)
+//   if (!(payload._id === req.author._id)) {
+//     res.status(400).json({ message: 'Specified id is not valid' });
+//     return;
+//   }
 
   Shelter.findByIdAndRemove(shelterId)
     .then( deteletedShelter => {
