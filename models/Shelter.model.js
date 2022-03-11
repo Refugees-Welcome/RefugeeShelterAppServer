@@ -23,6 +23,19 @@ const shelterSchema = new Schema({
     address:{
         type: String,
     },
+    location: {
+        type: {
+          type: String, // Don't do `{ location: { type: String } }`
+          enum: ['Point'], // 'location.type' must be 'Point'
+          required: true
+        },
+        // Note that longitude comes first in a GeoJSON coordinate array, not latitude.
+        coordinates: {
+          type: [Number],
+          required: true
+        }
+      }
+
     // requestFrom:{
     //     type: { type: Schema.Types.ObjectId, ref: 'User' 
     //     }

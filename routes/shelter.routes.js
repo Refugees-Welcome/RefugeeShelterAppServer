@@ -15,8 +15,14 @@ router.post("/", (req, res) => {
     description: req.body.description,
     available: req.body.available,
     author: req.body.author,
-    address: req.body.address
+    address: req.body.address,
+    location: {
+      coordinates: req.body.location.coordinates,
+      type: 'Point'
+    }
   }
+console.log("shelterDetails server")
+console.log( shelterDetails);
 
   Shelter.create(shelterDetails)
     .then(shelterCreated => {
@@ -73,7 +79,11 @@ router.put('/:shelterId',isAuthenticated, (req, res, next) => {
     contactInfo: req.body.contactInfo,
     description: req.body.description,
     available: req.body.available,
-    address: req.body.address
+    address: req.body.address,
+    location: {
+      type: 'Point',
+      coordinates: []
+    }
   }
 
   Shelter.findByIdAndUpdate(shelterId, shelterDetails, { new: true })
